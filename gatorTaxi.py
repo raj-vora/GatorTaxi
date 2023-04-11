@@ -11,18 +11,18 @@ class RideManager:
     def get_ride_by_number(self, rideNumber):
         ride = self.red_black_tree.search(rideNumber)
         if ride:
-            print(f"({rideNumber}, {ride.val.rideCost}, {ride.val.tripDuration})", file=open("output_file.txt", "a"))
+            print(ride.val, file=open("output_file.txt", "a"))
         else:
-            print("(0, 0, 0)", file=open("output_file.txt", "a"))
+            print("(0,0,0)", file=open("output_file.txt", "a"))
 
     def get_rides_by_range(self, min_rideNumber, max_rideNumber):
         rides = []
         self._inorder_traversal(self.red_black_tree.root, rides, min_rideNumber, max_rideNumber)
         if rides:
-            output_str = ", ".join([str(rides[i]) for i in range(len(rides))])
+            output_str = ",".join([str(rides[i]) for i in range(len(rides))])
             print(output_str, file=open("output_file.txt", "a"))
         else:
-            print("(0, 0, 0)", file=open("output_file.txt", "a"))
+            print("(0,0,0)", file=open("output_file.txt", "a"))
 
     def _inorder_traversal(self, node, rides, min_rideNumber, max_rideNumber):
         if node == self.red_black_tree.nil:
@@ -41,7 +41,6 @@ class RideManager:
         self.red_black_tree.insert(ride)
 
     def get_next_ride(self):
-        print(self.min_heap.heap)
         ride = self.min_heap.extract_min()
         if ride == None:
             print("No active ride requests", file=open("output_file.txt", "a"))
@@ -71,7 +70,6 @@ else:
 ride_service = RideManager()
 with open(input_file) as f:
     for command in f:
-        print(command)
         action, params = command.split('(', 1)
         params = params.strip(')\n ')
         if len(params) > 0 and params != " ":

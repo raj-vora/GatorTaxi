@@ -223,8 +223,9 @@ class RedBlackTree:
         if newTripDuration <= node.val.tripDuration:
             node.val.tripDuration = newTripDuration
         elif node.val.tripDuration< newTripDuration <= 2* node.val.tripDuration:
+            newRideCost = node.val.rideCost+10
             self.delete(rideNumber)
-            self.insert(Ride(node.val.rideNumber,node.val.rideCost+10,newTripDuration))
+            self.insert(Ride(node.val.rideNumber,newRideCost,newTripDuration))
         elif newTripDuration > 2* node.val.tripDuration:
             self.delete(rideNumber)
 
