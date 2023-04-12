@@ -16,204 +16,204 @@ class RedBlackTree:
         self.root = self.nil
 
     # Rotate left
-    def left_rotate(self, x):
-        y = x.right
-        x.right = y.left
-        if y.left != self.nil:
-            y.left.parent = x
-        y.parent = x.parent
-        if x.parent == self.nil:
-            self.root = y
-        elif x == x.parent.left:
-            x.parent.left = y
+    def left_rotate(self, current):
+        rightChild = current.right
+        current.right = rightChild.left
+        if rightChild.left != self.nil:
+            rightChild.left.parent = current
+        rightChild.parent = current.parent
+        if current.parent == self.nil:
+            self.root = rightChild
+        elif current == current.parent.left:
+            current.parent.left = rightChild
         else:
-            x.parent.right = y
-        y.left = x
-        x.parent = y
+            current.parent.right = rightChild
+        rightChild.left = current
+        current.parent = rightChild
 
     # Rotate right
-    def right_rotate(self, x):
-        y = x.left
-        x.left = y.right
-        if y.right != self.nil:
-            y.right.parent = x
-        y.parent = x.parent
-        if x.parent == self.nil:
-            self.root = y
-        elif x == x.parent.right:
-            x.parent.right = y
+    def right_rotate(self, current):
+        leftChild = current.left
+        current.left = leftChild.right
+        if leftChild.right != self.nil:
+            leftChild.right.parent = current
+        leftChild.parent = current.parent
+        if current.parent == self.nil:
+            self.root = leftChild
+        elif current == current.parent.right:
+            current.parent.right = leftChild
         else:
-            x.parent.left = y
-        y.right = x
-        x.parent = y
+            current.parent.left = leftChild
+        leftChild.right = current
+        current.parent = leftChild
 
     # Insert a node into the tree
     def insert(self, ride):
-        z = Node(ride, 'Red')
-        z.parent = self.nil
-        z.left = self.nil
-        z.right = self.nil
-        y = self.nil
-        x = self.root
+        newNode = Node(ride, 'Red')
+        newNode.parent = self.nil
+        newNode.left = self.nil
+        newNode.right = self.nil
+        temp = self.nil
+        root = self.root
 
-        while x != self.nil:
-            y = x
-            if z.val.rideNumber < x.val.rideNumber:
-                x = x.left
+        while root != self.nil:
+            temp = root
+            if newNode.val.rideNumber < root.val.rideNumber:
+                root = root.left
             else:
-                x = x.right
+                root = root.right
 
-        z.parent = y
-        if y == self.nil:
-            self.root = z
-        elif z.val.rideNumber < y.val.rideNumber:
-            y.left = z
+        newNode.parent = temp
+        if temp == self.nil:
+            self.root = newNode
+        elif newNode.val.rideNumber < temp.val.rideNumber:
+            temp.left = newNode
         else:
-            y.right = z
+            temp.right = newNode
 
-        z.left = self.nil
-        z.right = self.nil
-        z.color = "Red"
-        self.fix_insert(z)
+        newNode.left = self.nil
+        newNode.right = self.nil
+        newNode.color = "Red"
+        self.fix_insert(newNode)
 
     # Fix the tree after an insert
-    def fix_insert(self, z):
-        while z.parent.color == "Red":
-            if z.parent == z.parent.parent.left:
-                y = z.parent.parent.right
-                if y.color == "Red":
-                    z.parent.color = "Black"
-                    y.color = "Black"
-                    z.parent.parent.color = "Red"
-                    z = z.parent.parent
+    def fix_insert(self, newNode):
+        while newNode.parent.color == "Red":
+            if newNode.parent == newNode.parent.parent.left:
+                rightChild = newNode.parent.parent.right
+                if rightChild.color == "Red":
+                    newNode.parent.color = "Black"
+                    rightChild.color = "Black"
+                    newNode.parent.parent.color = "Red"
+                    newNode = newNode.parent.parent
                 else:
-                    if z == z.parent.right:
-                        z = z.parent
-                        self.left_rotate(z)
-                    z.parent.color = "Black"
-                    z.parent.parent.color = "Red"
-                    self.right_rotate(z.parent.parent)
+                    if newNode == newNode.parent.right:
+                        newNode = newNode.parent
+                        self.left_rotate(newNode)
+                    newNode.parent.color = "Black"
+                    newNode.parent.parent.color = "Red"
+                    self.right_rotate(newNode.parent.parent)
             else:
-                y = z.parent.parent.left
-                if y.color == "Red":
-                    z.parent.color = "Black"
-                    y.color = "Black"
-                    z.parent.parent.color = "Red"
-                    z = z.parent.parent
+                rightChild = newNode.parent.parent.left
+                if rightChild.color == "Red":
+                    newNode.parent.color = "Black"
+                    rightChild.color = "Black"
+                    newNode.parent.parent.color = "Red"
+                    newNode = newNode.parent.parent
                 else:
-                    if z == z.parent.left:
-                        z = z.parent
-                        self.right_rotate(z)
-                    z.parent.color = "Black"
-                    z.parent.parent.color = "Red"
-                    self.left_rotate(z.parent.parent)
+                    if newNode == newNode.parent.left:
+                        newNode = newNode.parent
+                        self.right_rotate(newNode)
+                    newNode.parent.color = "Black"
+                    newNode.parent.parent.color = "Red"
+                    self.left_rotate(newNode.parent.parent)
         self.root.color = "Black"
 
     # Delete a node from the tree
     def delete(self, val):
-        z = self.search(val)
-        if z == None:
+        current = self.search(val)
+        if current == None:
             return
-        y = z
-        y_original_color = y.color
-        if z.left == self.nil:
-            x = z.right
-            self.transplant(z, z.right)
-        elif z.right == self.nil:
-            x = z.left
-            self.transplant(z, z.left)
+        temp = current
+        y_original_color = temp.color
+        if current.left == self.nil:
+            root = current.right
+            self.transplant(current, current.right)
+        elif current.right == self.nil:
+            root = current.left
+            self.transplant(current, current.left)
         else:
-            y = self.minimum(z.right)
-            y_original_color = y.color
-            x = y.right
-            if y.parent == z:
-                x.parent = y
+            temp = self.minimum(current.right)
+            y_original_color = temp.color
+            root = temp.right
+            if temp.parent == current:
+                root.parent = temp
             else:
-                self.transplant(y, y.right)
-                y.right = z.right
-                y.right.parent = y
-            self.transplant(z, y)
-            y.left = z.left
-            y.left.parent = y
-            y.color = z.color
+                self.transplant(temp, temp.right)
+                temp.right = current.right
+                temp.right.parent = temp
+            self.transplant(current, temp)
+            temp.left = current.left
+            temp.left.parent = temp
+            temp.color = current.color
         if y_original_color == "Black":
-            self.fix_delete(x)
+            self.fix_delete(root)
 
     # Fix the tree after a delete
-    def fix_delete(self, x):
-        while x != self.root and x.color == "Black":
-            if x == x.parent.left:
-                w = x.parent.right
-                if w.color == "Red":
-                    w.color = "Black"
-                    x.parent.color = "Red"
-                    self.left_rotate(x.parent)
-                    w = x.parent.right
-                if w.left.color == "Black" and w.right.color == "Black":
-                    w.color = "Red"
-                    x = x.parent
+    def fix_delete(self, root):
+        while root != self.root and root.color == "Black":
+            if root == root.parent.left:
+                rightUncle = root.parent.right
+                if rightUncle.color == "Red":
+                    rightUncle.color = "Black"
+                    root.parent.color = "Red"
+                    self.left_rotate(root.parent)
+                    rightUncle = root.parent.right
+                if rightUncle.left.color == "Black" and rightUncle.right.color == "Black":
+                    rightUncle.color = "Red"
+                    root = root.parent
                 else:
-                    if w.right.color == "Black":
-                        w.left.color = "Black"
-                        w.color = "Red"
-                        self.right_rotate(w)
-                        w = x.parent.right
-                    w.color = x.parent.color
-                    x.parent.color = "Black"
-                    w.right.color = "Black"
-                    self.left_rotate(x.parent)
-                    x = self.root
+                    if rightUncle.right.color == "Black":
+                        rightUncle.left.color = "Black"
+                        rightUncle.color = "Red"
+                        self.right_rotate(rightUncle)
+                        rightUncle = root.parent.right
+                    rightUncle.color = root.parent.color
+                    root.parent.color = "Black"
+                    rightUncle.right.color = "Black"
+                    self.left_rotate(root.parent)
+                    root = self.root
             else:
-                w = x.parent.left
-                if w.color == "Red":
-                    w.color = "Black"
-                    x.parent.color = "Red"
-                    self.right_rotate(x.parent)
-                    w = x.parent.left
-                if w.right.color == "Black" and w.left.color == "Black":
-                    w.color = "Red"
-                    x = x.parent
+                rightUncle = root.parent.left
+                if rightUncle.color == "Red":
+                    rightUncle.color = "Black"
+                    root.parent.color = "Red"
+                    self.right_rotate(root.parent)
+                    rightUncle = root.parent.left
+                if rightUncle.right.color == "Black" and rightUncle.left.color == "Black":
+                    rightUncle.color = "Red"
+                    root = root.parent
                 else:
-                    if w.left.color == "Black":
-                        w.right.color = "Black"
-                        w.color = "Red"
-                        self.left_rotate(w)
-                        w = x.parent.left
-                    w.color = x.parent.color
-                    x.parent.color = "Black"
-                    w.left.color = "Black"
-                    self.right_rotate(x.parent)
-                    x = self.root
-        x.color = "Black"
+                    if rightUncle.left.color == "Black":
+                        rightUncle.right.color = "Black"
+                        rightUncle.color = "Red"
+                        self.left_rotate(rightUncle)
+                        rightUncle = root.parent.left
+                    rightUncle.color = root.parent.color
+                    root.parent.color = "Black"
+                    rightUncle.left.color = "Black"
+                    self.right_rotate(root.parent)
+                    root = self.root
+        root.color = "Black"
 
     # Replace one subtree as a child of its parent with another subtree
-    def transplant(self, u, v):
-        if u.parent == self.nil:
-            self.root = v
-        elif u == u.parent.left:
-            u.parent.left = v
+    def transplant(self, first, second):
+        if first.parent == self.nil:
+            self.root = second
+        elif first == first.parent.left:
+            first.parent.left = second
         else:
-            u.parent.right = v
-        v.parent = u.parent
+            first.parent.right = second
+        second.parent = first.parent
 
     # Find the node with the minimum value in a subtree
-    def minimum(self, x):
-        while x.left != self.nil:
-            x = x.left
-        return x
+    def minimum(self, min):
+        while min.left != self.nil:
+            min = min.left
+        return min
 
     # Search for a node with a specific value
     def search(self, val):
-        x = self.root
-        if x.val != None:
-            if x.val.rideNumber == val:
-                return x
-            while x != self.nil and x.val.rideNumber != val:
-                if val < x.val.rideNumber:
-                    x = x.left
+        root = self.root
+        if root.val != None:
+            if root.val.rideNumber == val:
+                return root
+            while root != self.nil and root.val.rideNumber != val:
+                if val < root.val.rideNumber:
+                    root = root.left
                 else:
-                    x = x.right
-            return x if x != self.nil else None
+                    root = root.right
+            return root if root != self.nil else None
 
     # Update the value of a node
     def update(self, rideNumber, newTripDuration):

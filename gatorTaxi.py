@@ -8,6 +8,7 @@ class RideManager:
         self.min_heap = MinHeap()
         self.red_black_tree = RedBlackTree()
 
+    # retrieves a ride by its rideNumber from the Red-Black Tree.
     def get_ride_by_number(self, rideNumber):
         ride = self.red_black_tree.search(rideNumber)
         if ride:
@@ -15,6 +16,7 @@ class RideManager:
         else:
             print("(0,0,0)", file=open("output_file.txt", "a"))
 
+    # retrieves a list of rides with rideNumbers between two given values from the Red-Black Tree
     def get_rides_by_range(self, min_rideNumber, max_rideNumber):
         rides = []
         self._inorder_traversal(self.red_black_tree.root, rides, min_rideNumber, max_rideNumber)
@@ -24,6 +26,7 @@ class RideManager:
         else:
             print("(0,0,0)", file=open("output_file.txt", "a"))
 
+    # helper method that performs an inorder traversal of the Red-Black Tree and adds rides with rideNumbers between two given values to a list.
     def _inorder_traversal(self, node, rides, min_rideNumber, max_rideNumber):
         if node == self.red_black_tree.nil:
             return
@@ -32,6 +35,7 @@ class RideManager:
             rides.append(node.val)
         self._inorder_traversal(node.right, rides, min_rideNumber, max_rideNumber)
 
+    #  adds a new ride to the Min Heap and the Red-Black Tree.
     def add_ride(self, rideNumber, rideCost, tripDuration):
         if self.red_black_tree.search(rideNumber):
             print("Duplicate RideNumber", file=open("output_file.txt", "a")) 
@@ -40,6 +44,7 @@ class RideManager:
         self.min_heap.insert(ride)
         self.red_black_tree.insert(ride)
 
+    # retrieves the ride with the lowest rideCost from the Min Heap and deletes it from the Red-Black Tree.
     def get_next_ride(self):
         ride = self.min_heap.extract_min()
         if ride == None:
@@ -48,10 +53,12 @@ class RideManager:
             self.red_black_tree.delete(ride.rideNumber)
             print(f"({ride.rideNumber}, {ride.rideCost}, {ride.tripDuration})", file=open("output_file.txt", "a"))
 
+    #  removes a ride from both the Min Heap and the Red-Black Tree.
     def delete_ride(self, rideNumber):
         self.min_heap.delete(rideNumber)
         self.red_black_tree.delete(rideNumber)
 
+    # updates the tripDuration of a ride in both the Min Heap and the Red-Black Tree.
     def update_ride(self, rideNumber, new_tripDuration):
         self.min_heap.update(rideNumber, new_tripDuration)
         self.red_black_tree.update(rideNumber, new_tripDuration)
