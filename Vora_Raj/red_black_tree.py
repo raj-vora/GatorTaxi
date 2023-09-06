@@ -24,7 +24,7 @@ class RedBlackTree:
         rightChild.parent = current.parent
         if current.parent == self.nil:
             self.root = rightChild
-        elif current == current.parent.left:
+        elif current == current.parent. left:
             current.parent.left = rightChild
         else:
             current.parent.right = rightChild
@@ -228,7 +228,3 @@ class RedBlackTree:
             self.insert(Ride(node.val.rideNumber,newRideCost,newTripDuration))
         elif newTripDuration > 2* node.val.tripDuration:
             self.delete(rideNumber)
-
-# Example usage:
-tree = RedBlackTree()
-tree.insert
